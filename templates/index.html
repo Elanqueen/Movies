@@ -1,0 +1,12 @@
+$def with(movies)
+<form action="/" method="post">
+    <input type="text" name="title">
+    <input type="submit" value="搜索">
+</form>
+<h1>影片列表： </h1>
+<p style="color:green;font-size:3em">
+    $for movie in movies:
+        <a href="/movie_des/$movie['id']">$movie['title']</a><br>
+</p>
+
+$var title:index
