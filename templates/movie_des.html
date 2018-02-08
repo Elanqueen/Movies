@@ -1,6 +1,6 @@
 $def with (movie)
 <image src="$movie[9]"></image>
-<!--暂时用自动从链接获取图片
+<!--暂时用自动从链接获取图片,此处注释的是从本地获取图片
 <image src="/static/poster/$(movie[1]).jpg"></image>-->
 
 <h1>$movie[2]</h1>
@@ -9,8 +9,15 @@ $def with (movie)
 <p>Genres:$movie[10]</p>
 <p>Year:$movie[7]</p>
 <p>Directors:$movie[5]</p>
-<p>Casts:$movie[11]</p>
+<p>Casts:
+$ casts = movie[11].split(',')
+$for cast in casts:
+    <a href="/cast/$cast"> $cast</a>
+</p>
 <p>alt:<a href="$movie[6]">$movie[6]</a></p>
 <p>subtype：$movie[8]</p>
 
 $var title:movie_description
+<!-- 此处的变量html会认为是global变量
+$casts=$movie[11].split(',')
+-->

@@ -16,6 +16,7 @@ urls=(
     '/','Index',
     '/movie_des/(\d+)','Movie',
     '/grab/','GrabData',
+    '/cast/(.*)','Cast',
 )
 #配置URL和匹配页面
 
@@ -112,6 +113,16 @@ class GrabData:
         f=open(fn,'wb')
         f.write(pic)
         f.close()
+
+class Cast:
+    def GET(self,cast):
+        db=sqlite3.connect("MovieSite.db")
+        cast_name="%"+cast+"%"
+        movies=db.execute("select * from mvgrab where casts like ?",(unicode(cast_name),)).fetchall()
+        if movies:
+            return render.index(movies)
+        else:
+            raise NullException
 
 if __name__=='__main__':
     app.run()
