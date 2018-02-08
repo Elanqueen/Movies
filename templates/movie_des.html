@@ -1,7 +1,16 @@
 $def with (movie)
-<h1>The description of movie shows on</h1>
-<p>Title:$movie[1]</p>
-<p>Year:$movie[2]</p>
-<p>内容详情：$movie[3]</p>
+<image src="$movie[9]"></image>
+<!--暂时用自动从链接获取图片
+<image src="/static/poster/$(movie[1]).jpg"></image>-->
+
+<h1>$movie[2]</h1>
+<p>Original_Title:$movie[4]</p>
+<p>Average Rating:$movie[3]</p>
+<p>Genres:$movie[10]</p>
+<p>Year:$movie[7]</p>
+<p>Directors:$movie[5]</p>
+<p>Casts:$movie[11]</p>
+<p>alt:<a href="$movie[6]">$movie[6]</a></p>
+<p>subtype：$movie[8]</p>
 
 $var title:movie_description

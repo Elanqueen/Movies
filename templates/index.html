@@ -4,9 +4,9 @@ $def with(movies)
     <input type="submit" value="搜索">
 </form>
 <h1>影片列表： </h1>
-<p style="color:green;font-size:3em">
+<p style="color:green;font-size:2em">
     $for movie in movies:
-        <a href="/movie_des/$movie['id']">$movie['title']</a><br>
+        <a href="/movie_des/$movie[1]">$movie[2]</a><br>
 </p>
 
 $var title:index
