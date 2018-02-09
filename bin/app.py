@@ -57,9 +57,10 @@ class Index:
             count = db.execute("select count(*) as count from mvgrab where title like ?",
                                (unicode(title),)).fetchall()
             count=count[0][0]
-            print title,movies,count
             db.close()
-            return render.index(movies,count)
+            return render.index(movies,count,form.title)
+        else:
+            return render.index([],0,"")
 
 class Movie:
     def GET(self,movie_id):
