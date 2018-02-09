@@ -17,6 +17,7 @@ urls=(
     '/movie_des/(\d+)','Movie',
     '/grab/','GrabData',
     '/cast/(.*)','Cast',
+    '/director/(.*)','Director'
 )
 #配置URL和匹配页面
 
@@ -42,7 +43,7 @@ class Index:
             #movies.append('%s (%s)'% (movie[1],movie[2]))
             movies.append({'id':movie[0],'title':movie[1]})
         db.close()
-        return render.index(movies)
+        return render.index(movies,count=0)
 
     def POST(self):
         db = sqlite3.connect("MovieSite.db")
@@ -51,11 +52,14 @@ class Index:
         if form.title:
             #movie=db.execute("select * from mvgrab where title = '霸王别姬'").fetchone()
             # movie=db.execute("select * from mvgrab where title = %s" % form.title).fetchone()
-            movie=db.execute("select * from mvgrab where title = ?",(unicode(form.title),)).fetchone()
+            title="%"+form.title+"%"
+            movies=db.execute("select * from mvgrab where title like ?",(unicode(title),)).fetchall()
+            count = db.execute("select count(*) as count from mvgrab where title like ?",
+                               (unicode(title),)).fetchall()
+            count=count[0][0]
+            print title,movies,count
             db.close()
-            return render.movie_des(movie)
-        else:
-            raise NullException
+            return render.index(movies,count)
 
 class Movie:
     def GET(self,movie_id):
@@ -75,13 +79,13 @@ class GrabData:
     def GET(self):
         self.grab_movie_to_db()
         db = sqlite3.connect("MovieSite.db")
-        movies=db.execute("select * from mvgrab limit 10").fetchall()
+        movies=db.execute("select * from mvgrab limit 20").fetchall()
         db.close()
         return render.index(movies)
 
     def grab_movie_to_db(self):
         '''将通过豆瓣API抓取到的排名前250的电影信息存入数据库'''
-        fp = urllib.urlopen("https://api.douban.com/v2/movie/top250?strat=0&count=50")
+        fp = urllib.urlopen("https://api.douban.com/v2/movie/top250?strat=0&count=250")
         data = fp.read()
         data_js = json.loads(data)
         movie_250 = data_js['subjects']
@@ -119,6 +123,16 @@ class Cast:
         db=sqlite3.connect("MovieSite.db")
         cast_name="%"+cast+"%"
         movies=db.execute("select * from mvgrab where casts like ?",(unicode(cast_name),)).fetchall()
+        if movies:
+            return render.index(movies)
+        else:
+            raise NullException
+
+class Director:
+    def GET(self,director):
+        db = sqlite3.connect("MovieSite.db")
+        cast_name = "%" + director + "%"
+        movies = db.execute("select * from mvgrab where directors like ?", (unicode(cast_name),)).fetchall()
         if movies:
             return render.index(movies)
         else:

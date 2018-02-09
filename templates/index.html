@@ -1,12 +1,22 @@
-$def with(movies)
+$def with(movies,count=0)
 <form action="/" method="post">
     <input type="text" name="title">
     <input type="submit" value="搜索">
 </form>
-<h1>影片列表： </h1>
-<p style="color:green;font-size:2em">
+$if count == 0:
+    $if movies!=[]:
+        <h1>影片列表： </h1>
+        <p style="color:green;font-size:em">
+        $for movie in movies:
+            <a href="/movie_des/$movie[1]">$movie[2]</a><br>
+        </p>
+    $else:
+        <h1>哇哦，没有找到相关的影片诶！</h1>
+$else:
+    <h1>相关的影片有$count部：</h1>
+    <p style="color:green;font-size:em">
     $for movie in movies:
         <a href="/movie_des/$movie[1]">$movie[2]</a><br>
-</p>
+    </p>
 
 $var title:index

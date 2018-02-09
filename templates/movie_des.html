@@ -8,7 +8,11 @@ $def with (movie)
 <p>Average Rating:$movie[3]</p>
 <p>Genres:$movie[10]</p>
 <p>Year:$movie[7]</p>
-<p>Directors:$movie[5]</p>
+<p>Directors:
+    $ directors = movie[5].split(',')
+    $for d in directors:
+        <a href="/director/$d"> $d</a>
+</p>
 <p>Casts:
 $ casts = movie[11].split(',')
 $for cast in casts:
