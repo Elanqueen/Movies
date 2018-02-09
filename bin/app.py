@@ -13,9 +13,8 @@ if sys.getdefaultencoding()!= defaultencoding:
     sys.setdefaultencoding(defaultencoding)
 
 urls=(
-    '/','Index',
     '/movie_des/(\d+)','Movie',
-    '/grab/','GrabData',
+    '/','GrabData',
     '/cast/(.*)','Cast',
     '/director/(.*)','Director'
 )
@@ -34,33 +33,6 @@ movies=[
 """
 #抛出异常设定
 class NullException(BaseException):"It is null, Please check."
-
-class Index:
-    def GET(self):
-        movies=[]
-        db = sqlite3.connect("MovieSite.db")
-        for movie in db.execute("select * from movie"):
-            #movies.append('%s (%s)'% (movie[1],movie[2]))
-            movies.append({'id':movie[0],'title':movie[1]})
-        db.close()
-        return render.index(movies,count=0)
-
-    def POST(self):
-        db = sqlite3.connect("MovieSite.db")
-        db.text_factory=str
-        form = web.input(name="霸王别姬") # 默认值设置：name="霸王别姬"name='阿甘正传'
-        if form.title:
-            #movie=db.execute("select * from mvgrab where title = '霸王别姬'").fetchone()
-            # movie=db.execute("select * from mvgrab where title = %s" % form.title).fetchone()
-            title="%"+form.title+"%"
-            movies=db.execute("select * from mvgrab where title like ?",(unicode(title),)).fetchall()
-            count = db.execute("select count(*) as count from mvgrab where title like ?",
-                               (unicode(title),)).fetchall()
-            count=count[0][0]
-            db.close()
-            return render.index(movies,count,form.title)
-        else:
-            return render.index([],0,"")
 
 class Movie:
     def GET(self,movie_id):
@@ -83,6 +55,23 @@ class GrabData:
         movies=db.execute("select * from mvgrab limit 20").fetchall()
         db.close()
         return render.index(movies)
+
+    def POST(self):
+        db = sqlite3.connect("MovieSite.db")
+        db.text_factory=str
+        form = web.input(name="霸王别姬") # 默认值设置：name="霸王别姬"name='阿甘正传'
+        if form.title:
+            #movie=db.execute("select * from mvgrab where title = '霸王别姬'").fetchone()
+            # movie=db.execute("select * from mvgrab where title = %s" % form.title).fetchone()
+            title="%"+form.title+"%"
+            movies=db.execute("select * from mvgrab where title like ?",(unicode(title),)).fetchall()
+            count = db.execute("select count(*) as count from mvgrab where title like ?",
+                               (unicode(title),)).fetchall()
+            count=count[0][0]
+            db.close()
+            return render.index(movies,count,form.title)
+        else:
+            return render.index([],0,"")
 
     def grab_movie_to_db(self):
         '''将通过豆瓣API抓取到的排名前250的电影信息存入数据库'''
