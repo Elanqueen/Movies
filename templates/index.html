@@ -8,12 +8,12 @@ $if count == 0:
         <h1>影片列表： </h1>
         <p style="color:green;font-size:em">
         $for movie in movies:
-            <a href="/movie_des/$movie[1]">$movie[2]</a><br>
+            <a href="/movie_des/$movie.mvid">$movie.title</a><br>
         </p>
     $else:
-        <p>哇哦，没有找到影片资源
+        <p>阿勒，没有找到影片资源
             $if key:
-                <b><u>$key</u></b> 相关的影片诶！
+                <b><u>与$key</u></b> 相关诶！
         </p>
 $else:
     <p>影片有$count部
@@ -22,7 +22,7 @@ $else:
     </p>
     <p style="color:green;font-size:em">
     $for movie in movies:
-        <a href="/movie_des/$movie[1]">$movie[2]</a><br>
+        <a href="/movie_des/$movie.mvid">$movie.title</a><br>
     </p>
 <p><a href="/">返回首页</a></p>
 
