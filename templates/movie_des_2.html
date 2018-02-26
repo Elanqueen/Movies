@@ -1,0 +1,28 @@
+$def with (movie)
+<image src="$(movie[9])"></image>
+<!--暂时用自动从链接获取图片,此处注释的是从本地获取图片
+    <image src="/static/poster/$(movie[9]).jpg"></image>-->
+
+<h1>$movie[2]</h1>
+<p>Original_Title:$movie[4]</p>
+<p>Average Rating:$movie[3]</p>
+<p>Genres:$movie[10]</p>
+<p>Year:$movie[7]</p>
+<p>Directors:
+    $ directors = (movie[5]).split(',')
+    $for d in directors:
+        <a href="/director/$d"> $d</a>
+</p>
+<p>Casts:
+$ casts = (movie[11]).split(',')
+$for cast in casts:
+    <a href="/cast/$cast"> $cast</a>
+</p>
+<p>alt:<a href="$movie[6]">$movie[6]</a></p>
+<p>subtype：$movie[8]</p>
+<p><a href="/">返回首页</a></p>
+
+$var title:movie_description
+<!-- 此处的变量html会认为是global变量
+    $casts=$(movie[11]).split(',')
+-->

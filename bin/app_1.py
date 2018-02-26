@@ -2,11 +2,12 @@
 
 '''
 此处采用web.db中方法，实现对数据库的操作
+采用mysql数据库
 '''
 
 import web
 #连接数据库
-import sqlite3
+#import sqlite3
 
 import urllib
 import json
@@ -30,7 +31,12 @@ render = web.template.render('templates/',base='layout')  #加载HTML模板
 
 #抛出异常设定
 class NullException(BaseException):"It is null, Please check."
-db=web.database(dbn="sqlite",db="MovieSite.db")
+#配置数据库
+db=web.database(
+    dbn="mysql",
+    db="movies",
+    user='root',
+    pw='root',)
 
 class Movie:
     def GET(self,movie_id):
